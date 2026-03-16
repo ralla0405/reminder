@@ -5,10 +5,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reminder {
 
     @Id
@@ -22,17 +20,31 @@ public class Reminder {
 
     private LocalDateTime remindAt;
 
-    @Builder.Default
-    private Boolean completed = false;
+    private Boolean completed;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
+    @Builder
+    public Reminder(String title, String description, LocalDateTime remindAt) {
+        this.title = title;
+        this.description = description;
+        this.remindAt = remindAt;
+        this.completed = false;
         this.createdAt = LocalDateTime.now();
-        if (this.completed == null) {
-            this.completed = false;
-        }
+    }
+
+    public void update(String title, String description, LocalDateTime remindAt) {
+        this.title = title;
+        this.description = description;
+        this.remindAt = remindAt;
+    }
+
+    public void complete() {
+        this.completed = true;
+    }
+
+    public void uncomplete() {
+        this.completed = false;
     }
 }

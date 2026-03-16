@@ -2,14 +2,14 @@
 
 ## Tech Stack 상세
 
-### Backend (기존)
+### Backend
 - **Spring Boot 4.0.3** / Java 25
 - **Spring Data JPA** + **H2** (in-memory DB, `jdbc:h2:mem:reminderdb`)
 - **Lombok** (boilerplate 제거)
-- API: REST (`/api/reminders`), JSON 응답
+- API: REST, JSON 응답
 - 빌드: Gradle (Kotlin DSL)
 
-### Frontend (신규)
+### Frontend
 - **Next.js** (latest, App Router)
 - **TypeScript** (strict mode)
 - **Tailwind CSS** (유틸리티 기반 스타일링)
@@ -22,18 +22,23 @@
 
 ---
 
-## Phase 1: 프로젝트 세팅 + 기본 목록
+## Phase 1: 백엔드 기본 API + 프론트엔드 세팅
 
-> 목표: Next.js 프로젝트 생성, 백엔드 연동, 리마인더 목록 표시
+> 목표: Spring Boot CRUD API 구현, Next.js 프로젝트 생성, 리마인더 목록 표시
 
-### 1-1. Next.js 프로젝트 초기화
+### 1-1. Spring Boot 프로젝트 구성
+- `Reminder` 엔티티 생성 (id, title, description, remindAt, completed, createdAt)
+- `ReminderRepository` 생성 (JpaRepository)
+- `ReminderService` 생성 (CRUD 로직)
+- `ReminderController` 생성 (REST API)
+- CORS 설정 (`WebMvcConfigurer`, `http://localhost:3000` 허용)
+- `application.yml` H2 설정
+
+### 1-2. Next.js 프로젝트 초기화
 - `frontend/` 디렉토리에 Next.js 프로젝트 생성 (App Router, TypeScript, Tailwind CSS)
 - `next.config.ts`에 API 프록시 설정 (`/api/**` → `http://localhost:8080`)
 - TypeScript 타입 정의 (`types/reminder.ts`)
 - API 클라이언트 모듈 (`lib/api.ts`) - fetch 기반
-
-### 1-2. 백엔드 CORS 설정
-- `WebMvcConfigurer` 구현으로 `http://localhost:3000` 허용
 
 ### 1-3. 리마인더 목록 UI
 - 메인 페이지에 전체 리마인더 목록 표시
@@ -48,7 +53,7 @@
 - Enter로 저장, Escape로 취소
 - 저장 후 즉시 목록에 반영
 
-**이 Phase 완료 시**: 리마인더를 보고 추가할 수 있는 기본 화면 동작
+**이 Phase 완료 시**: 백엔드 API 동작 + 리마인더를 보고 추가할 수 있는 기본 화면
 
 ---
 
@@ -73,7 +78,7 @@
 
 ### 2-4. Apple 스타일 레이아웃
 - 사이드바(고정) + 메인 영역 2단 레이아웃
-- 사이드바: 연한 회색 배경 (`#F2F2F7`), "전체" 항목만 표시 (Phase 1 수준)
+- 사이드바: 연한 회색 배경 (`#F2F2F7`), "전체" 항목만 표시
 - SF Pro 폰트, 둥근 모서리 (10-12px)
 - 기본 반응형 (모바일에서 사이드바 숨김/토글)
 
@@ -85,11 +90,11 @@
 
 > 목표: 리마인더를 그룹으로 분류, 사이드바에서 리스트 전환
 
-### 3-1. 백엔드 확장 - ReminderList 엔티티
+### 3-1. 백엔드 - ReminderList
 - `ReminderList` 엔티티: id, name, color, createdAt
 - `Reminder`에 `listId` (외래키, nullable) 추가
 - `ReminderListRepository` / `ReminderListService` / `ReminderListController`
-- API: `GET/POST/PUT/DELETE /api/lists`
+- API: `GET/POST/PUT/DELETE /api/lists`, `GET /api/lists/{id}/reminders`
 
 ### 3-2. 사이드바 - 리스트 목록
 - 리스트별 원형 컬러 아이콘 + 이름 + 항목 수
@@ -109,11 +114,11 @@
 
 > 목표: 오늘/예정/전체/완료됨 필터, 사이드바 상단 카드
 
-### 4-1. 백엔드 확장 - 필터 API
+### 4-1. 백엔드 - 필터 API
 - `GET /api/reminders?filter=today` - 오늘 알림
 - `GET /api/reminders?filter=scheduled` - 알림 날짜 있는 것 (날짜순)
 - `GET /api/reminders?filter=completed` - 완료된 것
-- (전체는 기존 `GET /api/reminders`)
+- 각 필터 카운트 API (`GET /api/reminders/counts`)
 
 ### 4-2. 필터 카드 UI
 - 사이드바 상단 2x2 그리드 카드

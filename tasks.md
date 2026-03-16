@@ -1,15 +1,20 @@
 # Reminder Web App - Tasks
 
-## Phase 1: 프로젝트 세팅 + 기본 목록
+## Phase 1: 백엔드 기본 API + 프론트엔드 세팅
 
-### 1-1. Next.js 프로젝트 초기화
+### 1-1. Spring Boot 프로젝트 구성
+- [ ] `Reminder` 엔티티 생성 (id, title, description, remindAt, completed, createdAt)
+- [ ] `ReminderRepository` 생성 (JpaRepository)
+- [ ] `ReminderService` 생성 (findAll, findById, create, update, complete, delete)
+- [ ] `ReminderController` 생성 (GET/POST/PUT/PATCH/DELETE `/api/reminders`)
+- [ ] CORS 설정 (`WebConfig.java` - `WebMvcConfigurer`, `http://localhost:3000` 허용)
+- [ ] `application.yml` H2 데이터소스 + JPA 설정
+
+### 1-2. Next.js 프로젝트 초기화
 - [ ] `frontend/` 디렉토리에 Next.js 프로젝트 생성 (App Router, TypeScript, Tailwind CSS)
 - [ ] `next.config.ts`에 API 프록시 설정 (`/api/**` → `http://localhost:8080`)
 - [ ] TypeScript 타입 정의 (`types/reminder.ts` - Reminder 인터페이스)
 - [ ] API 클라이언트 모듈 작성 (`lib/api.ts` - fetchAll, fetchById, create, update, complete, delete)
-
-### 1-2. 백엔드 CORS 설정
-- [ ] `WebConfig.java` 작성 - `WebMvcConfigurer` 구현, `http://localhost:3000` 허용
 
 ### 1-3. 리마인더 목록 UI
 - [ ] 메인 페이지 (`app/page.tsx`) - 리마인더 목록 fetch & 표시
@@ -53,7 +58,7 @@
 
 ## Phase 3: 리스트(그룹) 관리
 
-### 3-1. 백엔드 - ReminderList 엔티티
+### 3-1. 백엔드 - ReminderList
 - [ ] `ReminderList` 엔티티 생성 (id, name, color, createdAt)
 - [ ] `Reminder` 엔티티에 `listId` 외래키 추가 (nullable, ManyToOne)
 - [ ] `ReminderListRepository` 생성
