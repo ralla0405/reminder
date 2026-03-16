@@ -11,5 +11,5 @@
 
 ## 참고 문서
 - spec.md: 기능 명세
-- plan.md: 개발 계획 (6 phases)
-- tasks.md: 구현 테스트 체크리스트
+- plan.md: 개발 계획 (6 phases - 백엔드 Phase 1~3 → 프론트엔드 Phase 4~6)
+- tasks.md: 구현 체크리스트
