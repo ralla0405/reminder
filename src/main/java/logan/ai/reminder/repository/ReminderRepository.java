@@ -26,4 +26,6 @@ public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     long countByCompletedFalse();
 
     long countByCompletedTrue();
+
+    List<Reminder> findByReminderListId(Long reminderListId);
 }
