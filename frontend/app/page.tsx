@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Reminder, FilterCounts } from "@/types/reminder";
+import { Reminder, ReminderList, FilterCounts } from "@/types/reminder";
 import { reminderApi } from "@/lib/api";
+import { listApi } from "@/lib/listApi";
 import Sidebar from "@/components/Sidebar";
 import ReminderItem from "@/components/ReminderItem";
 import ReminderForm from "@/components/ReminderForm";
@@ -11,24 +12,45 @@ import ReminderDetail from "@/components/ReminderDetail";
 export default function Home() {
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [counts, setCounts] = useState<FilterCounts>({ today: 0, scheduled: 0, all: 0, completed: 0 });
+  const [lists, setLists] = useState<ReminderList[]>([]);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [activeListId, setActiveListId] = useState<number | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
 
   const loadReminders = useCallback(async () => {
-    const data = await reminderApi.fetchAll(activeFilter ?? undefined);
-    setReminders(data);
-  }, [activeFilter]);
+    if (activeListId !== null) {
+      const data = await listApi.fetchReminders(activeListId);
+      setReminders(data);
+    } else {
+      const data = await reminderApi.fetchAll(activeFilter ?? undefined);
+      setReminders(data);
+    }
+  }, [activeFilter, activeListId]);
 
   const loadCounts = async () => {
-    const data = await reminderApi.fetchCounts();
-    setCounts(data);
+    setCounts(await reminderApi.fetchCounts());
+  };
+
+  const loadLists = async () => {
+    setLists(await listApi.fetchAll());
   };
 
   useEffect(() => {
     loadReminders();
     loadCounts();
+    loadLists();
   }, [loadReminders]);
+
+  const handleFilterChange = (filter: string | null) => {
+    setActiveFilter(filter);
+    setActiveListId(null);
+  };
+
+  const handleListSelect = (listId: number) => {
+    setActiveListId(listId);
+    setActiveFilter(null);
+  };
 
   const handleCreate = async (title: string) => {
     await reminderApi.create(title);
@@ -55,22 +77,49 @@ export default function Home() {
     loadCounts();
   };
 
-  const filterLabel = activeFilter === "today" ? "오늘"
+  const handleListCreate = async (name: string, color: string) => {
+    await listApi.create(name, color);
+    loadLists();
+  };
+
+  const handleListDelete = async (id: number) => {
+    await listApi.delete(id);
+    if (activeListId === id) {
+      setActiveListId(null);
+      setActiveFilter(null);
+    }
+    loadLists();
+    loadReminders();
+    loadCounts();
+  };
+
+  const activeList = lists.find((l) => l.id === activeListId);
+  const headerLabel = activeListId
+    ? activeList?.name ?? ""
+    : activeFilter === "today" ? "오늘"
     : activeFilter === "scheduled" ? "예정"
     : activeFilter === "completed" ? "완료됨"
     : "전체";
+  const headerColor = activeList?.color;
 
   return (
     <div className="flex h-screen">
       <Sidebar
         counts={counts}
         activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
+        activeListId={activeListId}
+        lists={lists}
+        onFilterChange={handleFilterChange}
+        onListSelect={handleListSelect}
+        onListCreate={handleListCreate}
+        onListDelete={handleListDelete}
       />
 
       <main className="flex-1 flex flex-col overflow-hidden">
         <header className="px-6 pt-8 pb-2">
-          <h1 className="text-3xl font-bold">{filterLabel}</h1>
+          <h1 className="text-3xl font-bold" style={headerColor ? { color: headerColor } : undefined}>
+            {headerLabel}
+          </h1>
         </header>
 
         <div className="flex-1 overflow-y-auto">
