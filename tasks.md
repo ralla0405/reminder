@@ -47,39 +47,39 @@
 ## Phase 4: 프론트엔드 - 기본 UI + CRUD
 
 ### 4-1. Next.js 프로젝트 초기화
-- [ ] `frontend/` 디렉토리에 Next.js 프로젝트 생성 (App Router, TypeScript, Tailwind CSS)
-- [ ] `next.config.ts`에 API 프록시 설정 (`/api/**` → `http://localhost:8080`)
-- [ ] TypeScript 타입 정의 (`types/reminder.ts` - Reminder 인터페이스)
-- [ ] API 클라이언트 모듈 작성 (`lib/api.ts` - fetchAll, fetchById, create, update, complete, delete)
+- [x] `frontend/` 디렉토리에 Next.js 프로젝트 생성 (App Router, TypeScript, Tailwind CSS)
+- [x] `next.config.ts`에 API 프록시 설정 (`/api/**` → `http://localhost:8080`)
+- [x] TypeScript 타입 정의 (`types/reminder.ts` - Reminder 인터페이스)
+- [x] API 클라이언트 모듈 작성 (`lib/api.ts` - fetchAll, fetchById, create, update, complete, delete)
 
 ### 4-2. 리마인더 목록 UI
-- [ ] 메인 페이지 (`app/page.tsx`) - 리마인더 목록 fetch & 표시
-- [ ] `ReminderItem` 컴포넌트 - 원형 체크박스 + 제목 + 메모(1줄) + 날짜
-- [ ] 완료된 항목 스타일링 (취소선 + opacity 처리)
-- [ ] 항목 간 인덴트된 구분선 (Apple 스타일 separator)
+- [x] 메인 페이지 (`app/page.tsx`) - 리마인더 목록 fetch & 표시
+- [x] `ReminderItem` 컴포넌트 - 원형 체크박스 + 제목 + 메모(1줄) + 날짜
+- [x] 완료된 항목 스타일링 (취소선 + opacity 처리)
+- [x] 항목 간 인덴트된 구분선 (Apple 스타일 separator)
 
 ### 4-3. 리마인더 생성
-- [ ] "+ 새로운 미리 알림" 버튼 (목록 하단)
-- [ ] 인라인 입력 필드 (제목 필수, Enter 저장, Escape 취소)
-- [ ] `POST /api/reminders` 호출 후 목록 즉시 갱신
+- [x] "+ 새로운 미리 알림" 버튼 (목록 하단)
+- [x] 인라인 입력 필드 (제목 필수, Enter 저장, Escape 취소)
+- [x] `POST /api/reminders` 호출 후 목록 즉시 갱신
 
 ### 4-4. 완료 토글 + 삭제 + 수정
-- [ ] 체크박스 클릭 시 `PATCH /api/reminders/{id}/complete` 호출
-- [ ] 완료/미완료 상태 즉시 반영 (Optimistic UI)
-- [ ] 체크 애니메이션 (원형 채움 0.3s ease)
-- [ ] 항목 hover 시 삭제 버튼 노출
-- [ ] 클릭 시 `DELETE /api/reminders/{id}` 호출 (확인 없이 즉시)
+- [x] 체크박스 클릭 시 `PATCH /api/reminders/{id}/complete` 호출
+- [x] 완료/미완료 상태 즉시 반영 (Optimistic UI)
+- [x] 체크 애니메이션 (원형 채움 0.3s ease)
+- [x] 항목 hover 시 삭제 버튼 노출
+- [x] 클릭 시 `DELETE /api/reminders/{id}` 호출 (확인 없이 즉시)
 - [ ] 삭제 시 높이 축소 애니메이션
-- [ ] 항목 클릭 시 인라인 편집 모드 (제목/메모 수정)
-- [ ] `ReminderDetail` 컴포넌트 - (i) 버튼 클릭 시 슬라이드-인 상세 패널
-- [ ] 상세 패널에서 제목, 메모, 날짜/시간 수정
-- [ ] `PUT /api/reminders/{id}` 호출로 저장
+- [x] 항목 클릭 시 인라인 편집 모드 (제목/메모 수정)
+- [x] `ReminderDetail` 컴포넌트 - (i) 버튼 클릭 시 슬라이드-인 상세 패널
+- [x] 상세 패널에서 제목, 메모, 날짜/시간 수정
+- [x] `PUT /api/reminders/{id}` 호출로 저장
 
 ### 4-5. Apple 스타일 레이아웃
-- [ ] 2단 레이아웃 - `Sidebar` + 메인 영역
-- [ ] 사이드바: 연한 회색 배경 (`#F2F2F7`), "전체" 항목 표시
-- [ ] SF Pro 폰트 적용 (`-apple-system, BlinkMacSystemFont`)
-- [ ] 둥근 모서리 적용 (카드/입력 `border-radius: 10-12px`)
+- [x] 2단 레이아웃 - `Sidebar` + 메인 영역
+- [x] 사이드바: 연한 회색 배경 (`#F2F2F7`), "전체" 항목 표시
+- [x] SF Pro 폰트 적용 (`-apple-system, BlinkMacSystemFont`)
+- [x] 둥근 모서리 적용 (카드/입력 `border-radius: 10-12px`)
 - [ ] 기본 반응형 (모바일에서 사이드바 숨김/토글 버튼)
 
 ---
