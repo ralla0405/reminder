@@ -22,12 +22,12 @@
 ## Phase 2: 백엔드 - 리스트(그룹) 관리
 
 ### 2-1. ReminderList 엔티티 및 API
-- [ ] `ReminderList` 엔티티 생성 (id, name, color, createdAt)
-- [ ] `Reminder` 엔티티에 `reminderList` 외래키 추가 (nullable, ManyToOne)
-- [ ] `ReminderListRepository` 생성
-- [ ] `ReminderListService` 생성 (CRUD)
-- [ ] `ReminderListController` 생성 (`GET/POST/PUT/DELETE /api/lists`)
-- [ ] 리스트별 리마인더 조회 API (`GET /api/lists/{id}/reminders`)
+- [x] `ReminderList` 엔티티 생성 (id, name, color, createdAt)
+- [x] `Reminder` 엔티티에 `reminderList` 외래키 추가 (nullable, ManyToOne)
+- [x] `ReminderListRepository` 생성
+- [x] `ReminderListService` 생성 (CRUD)
+- [x] `ReminderListController` 생성 (`GET/POST/PUT/DELETE /api/lists`)
+- [x] 리스트별 리마인더 조회 API (`GET /api/lists/{id}/reminders`)
 
 ---
 
