@@ -22,6 +22,9 @@ public class Reminder {
 
     private Boolean completed;
 
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reminder_list_id")
     private ReminderList reminderList;
@@ -30,11 +33,12 @@ public class Reminder {
     private LocalDateTime createdAt;
 
     @Builder
-    public Reminder(String title, String description, LocalDateTime remindAt, ReminderList reminderList) {
+    public Reminder(String title, String description, LocalDateTime remindAt, ReminderList reminderList, Priority priority) {
         this.title = title;
         this.description = description;
         this.remindAt = remindAt;
         this.reminderList = reminderList;
+        this.priority = (priority != null) ? priority : Priority.NONE;
         this.completed = false;
         this.createdAt = LocalDateTime.now();
     }
@@ -43,6 +47,10 @@ public class Reminder {
         this.title = title;
         this.description = description;
         this.remindAt = remindAt;
+    }
+
+    public void updatePriority(Priority priority) {
+        this.priority = priority;
     }
 
     public void assignToList(ReminderList reminderList) {

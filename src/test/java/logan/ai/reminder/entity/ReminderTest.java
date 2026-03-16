@@ -18,6 +18,7 @@ class ReminderTest {
         assertNotNull(reminder.getCreatedAt());
         assertNull(reminder.getDescription());
         assertNull(reminder.getRemindAt());
+        assertEquals(Priority.NONE, reminder.getPriority());
     }
 
     @Test
@@ -86,5 +87,26 @@ class ReminderTest {
 
         assertTrue(reminder.getCompleted());
         assertEquals(originalCreatedAt, reminder.getCreatedAt());
+    }
+
+    @Test
+    void priority_shouldBeSetByBuilder() {
+        Reminder reminder = Reminder.builder()
+                .title("긴급")
+                .priority(Priority.HIGH)
+                .build();
+
+        assertEquals(Priority.HIGH, reminder.getPriority());
+    }
+
+    @Test
+    void updatePriority_shouldChangePriority() {
+        Reminder reminder = Reminder.builder()
+                .title("할 일")
+                .build();
+
+        reminder.updatePriority(Priority.MEDIUM);
+
+        assertEquals(Priority.MEDIUM, reminder.getPriority());
     }
 }
