@@ -34,13 +34,13 @@
 ## Phase 3: 백엔드 - 고도화 (우선순위, 하위 작업)
 
 ### 3-1. 우선순위
-- [ ] `Priority` enum 생성 (NONE, LOW, MEDIUM, HIGH)
-- [ ] `Reminder` 엔티티에 `priority` 필드 추가
+- [x] `Priority` enum 생성 (NONE, LOW, MEDIUM, HIGH)
+- [x] `Reminder` 엔티티에 `priority` 필드 추가
 
 ### 3-2. 하위 작업 (Subtask)
-- [ ] `Subtask` 엔티티 생성 (id, title, completed, reminder, sortOrder)
-- [ ] `SubtaskRepository` / `SubtaskService` / `SubtaskController` 생성
-- [ ] API: `GET/POST/PUT/DELETE /api/reminders/{id}/subtasks`
+- [x] `Subtask` 엔티티 생성 (id, title, completed, reminder, sortOrder)
+- [x] `SubtaskRepository` / `SubtaskService` / `SubtaskController` 생성
+- [x] API: `GET/POST/PUT/DELETE /api/reminders/{id}/subtasks`
 
 ---
 
