@@ -1,5 +1,6 @@
 package logan.ai.reminder.service.ports.in;
 
+import logan.ai.reminder.entity.Priority;
 import logan.ai.reminder.entity.Reminder;
 
 import java.time.LocalDateTime;
@@ -18,9 +19,9 @@ public interface ReminderService {
 
     Map<String, Long> getCounts();
 
-    Reminder create(String title, String description, LocalDateTime remindAt);
+    Reminder create(String title, String description, LocalDateTime remindAt, Priority priority, Long reminderListId);
 
-    Reminder update(Long id, String title, String description, LocalDateTime remindAt);
+    Reminder update(Long id, String title, String description, LocalDateTime remindAt, Priority priority, Long reminderListId);
 
     Reminder toggleComplete(Long id);
 

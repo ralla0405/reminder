@@ -4,6 +4,9 @@ export interface Reminder {
   description: string | null;
   remindAt: string | null;
   completed: boolean;
+  priority: Priority;
+  reminderListId: number | null;
+  reminderListName: string | null;
   createdAt: string;
 }
 

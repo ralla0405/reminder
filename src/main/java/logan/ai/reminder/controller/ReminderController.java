@@ -44,13 +44,13 @@ public class ReminderController {
 
     @PostMapping
     public ResponseEntity<ReminderResponse> createReminder(@RequestBody ReminderRequest request) {
-        Reminder created = reminderService.create(request.title(), request.description(), request.remindAt());
+        Reminder created = reminderService.create(request.title(), request.description(), request.remindAt(), request.priority(), request.reminderListId());
         return ResponseEntity.status(HttpStatus.CREATED).body(ReminderResponse.from(created));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReminderResponse> updateReminder(@PathVariable Long id, @RequestBody ReminderRequest request) {
-        Reminder updated = reminderService.update(id, request.title(), request.description(), request.remindAt());
+        Reminder updated = reminderService.update(id, request.title(), request.description(), request.remindAt(), request.priority(), request.reminderListId());
         return ResponseEntity.ok(ReminderResponse.from(updated));
     }
 

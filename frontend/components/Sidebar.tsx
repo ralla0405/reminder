@@ -18,6 +18,8 @@ interface Props {
   onListSelect: (listId: number) => void;
   onListCreate: (name: string, color: string) => void;
   onListDelete: (id: number) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
 const filters = [
@@ -30,6 +32,7 @@ const filters = [
 export default function Sidebar({
   counts, activeFilter, activeListId, lists,
   onFilterChange, onListSelect, onListCreate, onListDelete,
+  searchQuery, onSearchChange,
 }: Props) {
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState("");
@@ -50,6 +53,17 @@ export default function Sidebar({
 
   return (
     <aside className="w-72 h-screen bg-[var(--sidebar-bg)] p-4 flex flex-col overflow-y-auto">
+      {/* 검색 */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="검색"
+          className="w-full px-3 py-1.5 text-sm bg-white/70 border border-gray-200 rounded-lg outline-none focus:border-blue-400 placeholder-gray-400"
+        />
+      </div>
+
       {/* 필터 카드 */}
       <div className="grid grid-cols-2 gap-3 mb-6">
         {filters.map((f) => (

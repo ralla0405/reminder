@@ -1,7 +1,10 @@
 package logan.ai.reminder.service;
 
+import logan.ai.reminder.entity.Priority;
 import logan.ai.reminder.entity.Reminder;
+import logan.ai.reminder.entity.ReminderList;
 import logan.ai.reminder.service.ports.in.ReminderService;
+import logan.ai.reminder.repository.ReminderListRepository;
 import logan.ai.reminder.repository.ReminderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.NoSuchElementException;
 public class DefaultReminderService implements ReminderService {
 
     private final ReminderRepository reminderRepository;
+    private final ReminderListRepository reminderListRepository;
 
     @Override
     public List<Reminder> findAll() {
@@ -65,21 +69,35 @@ public class DefaultReminderService implements ReminderService {
 
     @Override
     @Transactional
-    public Reminder create(String title, String description, LocalDateTime remindAt) {
+    public Reminder create(String title, String description, LocalDateTime remindAt, Priority priority, Long reminderListId) {
+        ReminderList list = resolveList(reminderListId);
         Reminder reminder = Reminder.builder()
                 .title(title)
                 .description(description)
                 .remindAt(remindAt)
+                .priority(priority)
+                .reminderList(list)
                 .build();
         return reminderRepository.save(reminder);
     }
 
     @Override
     @Transactional
-    public Reminder update(Long id, String title, String description, LocalDateTime remindAt) {
+    public Reminder update(Long id, String title, String description, LocalDateTime remindAt, Priority priority, Long reminderListId) {
         Reminder reminder = findById(id);
         reminder.update(title, description, remindAt);
+        if (priority != null) {
+            reminder.updatePriority(priority);
+        }
+        ReminderList list = resolveList(reminderListId);
+        reminder.assignToList(list);
         return reminder;
+    }
+
+    private ReminderList resolveList(Long listId) {
+        if (listId == null) return null;
+        return reminderListRepository.findById(listId)
+                .orElseThrow(() -> new NoSuchElementException("ReminderList not found: " + listId));
     }
 
     @Override

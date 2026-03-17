@@ -1,4 +1,4 @@
-import { Reminder, FilterCounts } from "@/types/reminder";
+import { Reminder, FilterCounts, Priority } from "@/types/reminder";
 
 const BASE_URL = "/api";
 
@@ -28,19 +28,19 @@ export const reminderApi = {
     return fetchJSON(`${BASE_URL}/reminders/counts`);
   },
 
-  create(title: string, description?: string, remindAt?: string): Promise<Reminder> {
+  create(title: string, description?: string, remindAt?: string, priority?: Priority, reminderListId?: number): Promise<Reminder> {
     return fetchJSON(`${BASE_URL}/reminders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, description, remindAt }),
+      body: JSON.stringify({ title, description, remindAt, priority, reminderListId }),
     });
   },
 
-  update(id: number, title: string, description?: string, remindAt?: string): Promise<Reminder> {
+  update(id: number, title: string, description?: string, remindAt?: string, priority?: Priority, reminderListId?: number | null): Promise<Reminder> {
     return fetchJSON(`${BASE_URL}/reminders/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, description, remindAt }),
+      body: JSON.stringify({ title, description, remindAt, priority, reminderListId }),
     });
   },
 

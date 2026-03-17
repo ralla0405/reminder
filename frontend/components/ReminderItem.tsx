@@ -7,14 +7,39 @@ interface Props {
   onToggleComplete: (id: number) => void;
   onDelete: (id: number) => void;
   onEdit: (reminder: Reminder) => void;
+  searchQuery?: string;
 }
 
-export default function ReminderItem({ reminder, onToggleComplete, onDelete, onEdit }: Props) {
+function HighlightText({ text, query }: { text: string; query?: string }) {
+  if (!query || !text) return <>{text}</>;
+  const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"));
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.toLowerCase() === query.toLowerCase() ? (
+          <mark key={i} className="bg-yellow-200 rounded-sm px-0.5">{part}</mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
+
+const PRIORITY_ICONS: Record<string, string> = {
+  LOW: "!",
+  MEDIUM: "!!",
+  HIGH: "!!!",
+};
+
+export default function ReminderItem({ reminder, onToggleComplete, onDelete, onEdit, searchQuery }: Props) {
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return null;
     const date = new Date(dateStr);
     return date.toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
   };
+
+  const priorityIcon = PRIORITY_ICONS[reminder.priority];
 
   return (
     <div className="group flex items-start gap-3 py-2 px-4">
@@ -39,11 +64,18 @@ export default function ReminderItem({ reminder, onToggleComplete, onDelete, onE
         className="flex-1 min-w-0 cursor-pointer"
         onClick={() => onEdit(reminder)}
       >
-        <p className={`text-[15px] font-medium ${reminder.completed ? "line-through opacity-40" : ""}`}>
-          {reminder.title}
-        </p>
+        <div className="flex items-center gap-1.5">
+          {priorityIcon && (
+            <span className="text-orange-500 text-[13px] font-bold flex-shrink-0">{priorityIcon}</span>
+          )}
+          <p className={`text-[15px] font-medium ${reminder.completed ? "line-through opacity-40" : ""}`}>
+            <HighlightText text={reminder.title} query={searchQuery} />
+          </p>
+        </div>
         {reminder.description && (
-          <p className="text-[13px] text-gray-500 truncate">{reminder.description}</p>
+          <p className="text-[13px] text-gray-500 truncate">
+            <HighlightText text={reminder.description} query={searchQuery} />
+          </p>
         )}
         {reminder.remindAt && (
           <p className="text-[12px] text-gray-400">{formatDate(reminder.remindAt)}</p>
